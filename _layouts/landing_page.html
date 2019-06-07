@@ -13,19 +13,25 @@ layout: default
     </div>
 
     <div style="display: flex; flex-wrap: wrap; margin-top: 10px; justify-content: center;" >
-    {% for tile in site.data.landing_page.tiles%}
+    {% for tile in site.data.landing_page.tiles -%}
 
         <div
             style="cursor: pointer; width: 190px; margin: 5px; padding: 5px; padding-top: 10px; padding-bottom: 10px; border: 1px solid #0696D7; border-radius: 4px; text-align: center;"
             onmouseover="this.style.background='#eeeeee';"
             onmouseout="this.style.background='white';"
-            onclick="location.href='{{ tile.target }}';"
+            onclick="location.href=
+                {%- for page_iter in site.pages -%}
+                    {%- if page_iter.pagename == tile.page -%}
+                        '{{ page_iter.url | absolute_url }}?title={{ page_iter.title | url_encode }}'
+                    {%- endif -%}
+                {%- endfor -%}
+            ;"
         >
             <img style="width: 80px; height: 80px; box-shadow: none;" src="{{ tile.image }}"/>
             <div class="fs-2">{{ site.data.landing_page_text[tile.name] }}</div>
         </div>
 
-    {% endfor %}
+    {%- endfor %}
     </div>
 
 
